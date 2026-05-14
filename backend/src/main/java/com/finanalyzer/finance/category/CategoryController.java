@@ -1,5 +1,6 @@
 package com.finanalyzer.finance.category;
 
+import com.finanalyzer.finance.category.dto.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,29 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public Category create(@Valid @RequestBody Category category) {
-        return categoryService.create(category);
+    public CategoryResponseDTO create(@Valid @RequestBody CreateCategoryRequestDTO request) {
+        return categoryService.create(request);
     }
+
     @GetMapping("/findAll")
-    public List<Category> findAll() {
+    public List<CategoryResponseDTO> findAll() {
         return categoryService.findAll();
     }
-    @GetMapping("{id}")
-    public Category findById(@PathVariable Long id){
+
+    @GetMapping("/{id}")
+    public CategoryResponseDTO findById(@PathVariable Long id) {
         return categoryService.findById(id);
     }
-    @DeleteMapping("/{id}")
+
+    @PutMapping("/edit/{id}")
+    public CategoryResponseDTO update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateCategoryRequestDTO request
+    ) {
+        return categoryService.update(id, request);
+    }
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         categoryService.deleteById(id);
         return ResponseEntity.noContent().build();
